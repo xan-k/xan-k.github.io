@@ -3,6 +3,8 @@ import mouse
 import time
 
 is_clicking = False
+click_count = 0
+max_clicks = 10000  # Максимальное количество кликов перед завершением
 
 def set_clicker():
     global is_clicking
@@ -26,9 +28,17 @@ try:
     print("Программа запущена. Ожидание действий...")
     while True:
         if is_clicking:
-            print("Кликер активен, выполняется двойной клик...")
+            click_count += 1
+            print(f"Кликер активен, выполняется {click_count}-й двойной клик...")
+            
             mouse.double_click(button='left')
             time.sleep(0.01)
+            
+            # Проверка, достигли ли мы максимального количества кликов
+            if click_count >= max_clicks:
+                print("Достигнуто максимальное количество кликов. Остановка.")
+                is_clicking = False
+                click_count = 0  # Сброс счетчика после достижения лимита
         else:
             # Добавим задержку, чтобы не нагружать процессор
             time.sleep(0.01)
